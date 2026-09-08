@@ -1,0 +1,5 @@
+const CACHE='athar-mahmoud-v3';
+const CORE=['./','./index.html','./quran.html','./azkar.html','./duas.html','./about.html','./site.config.js','./js/app.js','./js/quran.js','./js/azkar.js','./js/duas.js','./data/azkar.js','./data/duas.js','./css/main.css','./css/responsive.css','./manifest.json','./assets/icons/favicon-48.png','./assets/icons/icon-192.png','./assets/icons/icon-512.png'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.origin!==location.origin)return;e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>cached)));});
