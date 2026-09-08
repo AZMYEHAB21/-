@@ -37,7 +37,7 @@
   function renderAyahs(){const marks=new Set(saved());container.innerHTML=state.ayahs.map(a=>`<article class="ayah" id="ayah-${a.number}" data-global="${a.number}"><div class="ayah-text">${a.text} <span class="ayah-number">﴿${nf(a.numberInSurah)}﴾</span></div><div class="ayah-footer"><span>الآية ${nf(a.numberInSurah)}</span><div class="ayah-actions"><button class="mini-btn play-ayah" type="button" data-global="${a.number}">▶ استماع</button><button class="mini-btn copy-ayah" type="button" data-global="${a.number}">نسخ</button><button class="mini-btn share-ayah" type="button" data-global="${a.number}">مشاركة</button><button class="mini-btn save-ayah" type="button" data-global="${a.number}">${marks.has(a.number)?'♥':'♡'}</button></div></div></article>`).join('');}
   function findAyah(global){return state.ayahs.findIndex(a=>a.number===global);}
   function audioUrl(a,forceFallback=false){const cfg=reciterMap[state.reciter]||reciterMap['ar.alafasy'];if(forceFallback && fallbackEveryAyah[state.reciter])return `https://everyayah.com/data/${fallbackEveryAyah[state.reciter]}/${String(state.current.number).padStart(3,'0')}${String(a.numberInSurah).padStart(3,'0')}.mp3`;if(state.reciter==='ar.alafasy'||state.reciter==='ar.husary'||state.reciter==='ar.minshawi')return `${cfg[2]}${a.number}.mp3`;return `${cfg[2]}${String(state.current.number).padStart(3,'0')}${String(a.numberInSurah).padStart(3,'0')}.mp3`;}
-  function playIndex(index){if(index<0)return;if(index>=state.ayahs.length){if(state.repeat==='surah'){playIndex(0);return;}nextSurah();return;}state.currentIndex=index;const a=state.ayahs[index];audio.dataset.fallback='';audio.src=audioUrl(a);audio.playbackRate=state.speed;audioBox.classList.remove('hidden');$('audio-surah').textContent=state.current.name;$('audio-ayah').textContent=`الآية ${nf(a.numberInSurah)} — ${reciterMap[state.reciter]?.[1]||''}`;container.querySelectorAll('.ayah').forEach(x=>x.classList.remove('current'));document.getElementById(`ayah-${a.number}`)?.classList.add('current');localStorage.setItem(lastKey,JSON.stringify({number:state.current.number,ayah:a.numberInSurah}));focusGlobal(a.number,false);if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:`${state.current.name} — الآية ${a.numberInSurah}`,artist:reciterMap[state.reciter]?.[1]||'القرآن الكريم',album:C.name});}audio.play().catch(()=>R.toast('اضغط تشغيل لبدء التلاوة'));}
+  function playIndex(index){if(index<0)return;if(index>=state.ayahs.length){if(state.repeat==='surah'){playIndex(0);return;}nextSurah();return;}state.currentIndex=index;const a=state.ayahs[index];audio.dataset.fallback='';audio.src=audioUrl(a);audio.playbackRate=state.speed;audioBox.classList.remove('hidden');requestAnimationFrame(syncAudioSpace);$('audio-surah').textContent=state.current.name;$('audio-ayah').textContent=`الآية ${nf(a.numberInSurah)} — ${reciterMap[state.reciter]?.[1]||''}`;container.querySelectorAll('.ayah').forEach(x=>x.classList.remove('current'));document.getElementById(`ayah-${a.number}`)?.classList.add('current');localStorage.setItem(lastKey,JSON.stringify({number:state.current.number,ayah:a.numberInSurah}));focusGlobal(a.number,false);if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:`${state.current.name} — الآية ${a.numberInSurah}`,artist:reciterMap[state.reciter]?.[1]||'القرآن الكريم',album:C.name});}audio.play().catch(()=>R.toast('اضغط تشغيل لبدء التلاوة'));}
   function playAyah(global){playIndex(findAyah(global));}
   function nextAyah(){playIndex(state.currentIndex+1);}
   function prevAyah(){playIndex(Math.max(0,state.currentIndex-1));}
@@ -57,8 +57,19 @@
   reciter.addEventListener('change',e=>{state.reciter=e.target.value;localStorage.setItem(R.storageKey('reciter'),state.reciter);if(state.currentIndex>=0)playIndex(state.currentIndex);});
   speed.addEventListener('change',e=>{state.speed=Number(e.target.value);audio.playbackRate=state.speed;localStorage.setItem(R.storageKey('speed'),String(state.speed));});
   repeat.addEventListener('change',e=>{state.repeat=e.target.value;localStorage.setItem(R.storageKey('repeat'),state.repeat);});
+  function syncAudioSpace(){
+    if(!window.matchMedia('(max-width: 680px)').matches || audioBox.classList.contains('hidden')){
+      document.body.style.setProperty('--quran-audio-space','0px');
+      return;
+    }
+    const height=audioBox.getBoundingClientRect().height;
+    document.body.style.setProperty('--quran-audio-space',`${Math.ceil(height)+12}px`);
+  }
+  const audioResizeObserver=new ResizeObserver(syncAudioSpace);
+  audioResizeObserver.observe(audioBox);
+  window.addEventListener('resize',syncAudioSpace,{passive:true});
   $('audio-prev').addEventListener('click',prevAyah);$('audio-next').addEventListener('click',nextAyah);
-  $('audio-close').addEventListener('click',()=>{audio.pause();audioBox.classList.add('hidden');});
+  $('audio-close').addEventListener('click',()=>{audio.pause();audioBox.classList.add('hidden');syncAudioSpace();});
   $('font-increase').addEventListener('click',()=>{state.font=Math.min(7,state.font+1);localStorage.setItem(R.storageKey('quran-font'),state.font);applyFont();});$('font-decrease').addEventListener('click',()=>{state.font=Math.max(0,state.font-1);localStorage.setItem(R.storageKey('quran-font'),state.font);applyFont();});
   $('surah-search').addEventListener('input',e=>{updateSurahSearch(e.target.value);clearTimeout(searchTimer);searchTimer=setTimeout(()=>searchQuran(e.target.value),420);});
   $('random-ayah').addEventListener('click',async()=>{try{const j=await getJSON(`${C.apiBase}/ayah/random/quran-uthmani`);const a=j.data;await openSurah(a.surah.number,true,a.numberInSurah);}catch{R.toast('تعذر جلب آية عشوائية');}});

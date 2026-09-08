@@ -24,3 +24,69 @@
 @keyframes floatOrb{50%{transform:translate3d(0,18px,0) scale(1.04)}}
 @keyframes softRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes softPulse{50%{opacity:.45;transform:scale(.96)}}
+
+/* Quran mobile polish — keeps the audio dock from covering the Mushaf */
+body.quran-page{--quran-audio-space:0px}
+@media(max-width:680px){
+  body.quran-page{padding-bottom:var(--quran-audio-space)}
+  body.quran-page .quran-main{min-width:0;width:100%}
+  body.quran-page .quran-toolbar{gap:12px;margin-bottom:14px}
+  body.quran-page .quran-toolbar h2{font-size:1.45rem;margin:.25rem 0 0}
+  body.quran-page .quran-info{margin:9px 0 0;gap:6px}
+  body.quran-page .badge{font-size:.74rem;padding:4px 8px}
+  body.quran-page .ayah-container{gap:10px}
+  body.quran-page .ayah{padding:15px 13px;border-radius:17px;scroll-margin-top:92px;scroll-margin-bottom:calc(var(--quran-audio-space) + 18px)}
+  body.quran-page .ayah-text{font-size:clamp(1.55rem,6.2vw,1.85rem);line-height:2.25;overflow-wrap:break-word}
+  body.quran-page .ayah-footer{gap:10px;margin-top:12px}
+  body.quran-page .ayah-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  body.quran-page .ayah-actions .mini-btn{width:100%;min-height:42px;padding:7px 8px}
+
+  /* Compact mobile audio dock: multiple rows, but never over the Quran */
+  body.quran-page .audio-player{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    padding:9px 0 max(9px,env(safe-area-inset-bottom));
+    border-radius:18px 18px 0 0;
+    box-shadow:0 -8px 28px rgba(0,0,0,.20);
+  }
+  body.quran-page .audio-inner{
+    width:calc(100% - 18px);
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) 42px 42px;
+    gap:7px;
+    align-items:center;
+  }
+  body.quran-page .audio-meta{min-width:0;padding-inline:2px}
+  body.quran-page .audio-meta strong{font-size:.83rem}
+  body.quran-page .audio-meta span{font-size:.73rem;color:rgba(255,255,255,.72);margin-top:2px}
+  body.quran-page .audio-player .icon-btn{width:42px;height:42px;min-width:42px}
+  body.quran-page .audio-player audio{
+    grid-column:1/-1;
+    width:100%;
+    height:40px;
+    margin:1px 0 0;
+  }
+  body.quran-page .audio-controls{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:1.45fr .75fr .85fr;
+    gap:6px;
+  }
+  body.quran-page .audio-controls select{
+    grid-column:auto!important;
+    width:100%;
+    min-width:0!important;
+    max-width:none;
+    height:38px;
+    padding:5px 8px;
+    font-size:.74rem;
+  }
+  body.quran-page .audio-player:not(.hidden) + #site-footer{margin-bottom:0}
+}
+@media(max-width:380px){
+  body.quran-page .audio-inner{grid-template-columns:40px minmax(0,1fr) 40px 40px;gap:5px}
+  body.quran-page .audio-player .icon-btn{width:40px;height:40px;min-width:40px}
+  body.quran-page .audio-controls{grid-template-columns:1fr 1fr}
+  body.quran-page .audio-controls select:first-child{grid-column:1/-1!important}
+  body.quran-page .ayah-text{font-size:1.5rem;line-height:2.2}
+}
