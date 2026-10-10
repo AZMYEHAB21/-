@@ -187,5 +187,5 @@ http://localhost:5500
 هذا الموقع تذكرة بسيطة بالدعاء للمرحوم **محمود عزمي العمري**. نسأل الله أن يغفر له ويرحمه، وأن يجعل كل قراءة وذكر ودعاء فيه أثرًا طيبًا ورحمةً ونورًا.
 
 <div align="center">
-  <sub>Built with care by <a href="https://github.com/AZMYEHAB21">AZMY EHAB</a> · أثر يبقى</sub>
+  <sub>Built with care by <a href="https://azmyehab21.github.io/Social-media/">AZMY EHAB</a> · أثر يبقى</sub>
 </div>
