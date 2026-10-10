@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-labelledby="title desc">
+  <title id="title">أثر | Athar</title>
+  <desc id="desc">A calm emerald and gold banner for Athar, a website for the Holy Quran, remembrance and prayer.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#062f2b"/>
+      <stop offset="0.55" stop-color="#0b5148"/>
+      <stop offset="1" stop-color="#073b36"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#cba75b"/>
+      <stop offset="0.5" stop-color="#f5dfa0"/>
+      <stop offset="1" stop-color="#b99145"/>
+    </linearGradient>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M 27 0 L 27 54 M 0 27 L 54 27" fill="none" stroke="#d9c58b" stroke-opacity=".09" stroke-width="1"/>
+      <path d="M 0 0 L 54 54 M 54 0 L 0 54" fill="none" stroke="#d9c58b" stroke-opacity=".045" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#69c5a8" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#69c5a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="340" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="340" rx="24" fill="url(#grid)"/>
+  <ellipse cx="600" cy="170" rx="450" ry="240" fill="url(#glow)"/>
+  <rect x="18" y="18" width="1164" height="304" rx="18" fill="none" stroke="url(#gold)" stroke-opacity=".52" stroke-width="1.5"/>
+  <g fill="none" stroke="url(#gold)" stroke-width="1.5" opacity=".8">
+    <circle cx="112" cy="82" r="24"/>
+    <circle cx="112" cy="82" r="34" stroke-opacity=".45"/>
+    <path d="M112 39 L112 125 M69 82 L155 82 M82 52 L142 112 M142 52 L82 112" stroke-opacity=".58"/>
+    <path d="M1088 215 l16 16 -16 16 -16 -16z M1088 183 l48 48 -48 48 -48 -48z" stroke-opacity=".5"/>
+    <path d="M1088 170 v-16 M1088 279 v-16 M1027 231 h-16 M1150 231 h-16" stroke-opacity=".55"/>
+  </g>
+  <g transform="translate(1044 76)">
+    <circle cx="0" cy="0" r="28" fill="url(#gold)"/>
+    <circle cx="12" cy="-7" r="25" fill="#0a4a41"/>
+    <path d="M28 -29 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="url(#gold)"/>
+  </g>
+  <g fill="url(#gold)" opacity=".95">
+    <circle cx="100" cy="245" r="3"/><circle cx="130" cy="266" r="2"/><circle cx="164" cy="237" r="2.5"/>
+    <circle cx="1030" cy="280" r="3"/><circle cx="1062" cy="298" r="2"/><circle cx="1122" cy="286" r="2.5"/>
+  </g>
+  <g text-anchor="middle" fill="#fffdf6">
+    <text x="600" y="135" font-size="25" font-family="Arial, sans-serif" letter-spacing="8" fill="#e9d39b">A T H A R</text>
+    <text x="600" y="207" font-size="76" font-weight="700" font-family="Arial, sans-serif" letter-spacing="5">ATHAR</text>
+    <rect x="510" y="231" width="180" height="2" rx="1" fill="url(#gold)"/>
+    <text x="600" y="270" font-size="20" font-family="Arial, sans-serif" letter-spacing="2" fill="#e6f1eb">QUR’AN · REMEMBRANCE · PRAYER</text>
+    <text x="600" y="300" font-size="13" font-family="Arial, sans-serif" letter-spacing="2" fill="#bbd5cc">A DIGITAL REMEMBRANCE BY AZMY EHAB</text>
+  </g>
+</svg>
